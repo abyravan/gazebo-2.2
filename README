@@ -34,3 +34,15 @@ Read the installation instructions (http://gazebosim.org/documentation.html) in 
 
 
 - Nate Koenig
+
+Additional changes made by Arun:
+--------------------------------
+1) fsaa = 0 setting (had to change texture adding code in Camera.cc where fsaa was set to 4 before loading). 
+   This removed anti-aliasing effects from the color image. Depth image had not anti-aliasing by default
+2) PR: for contact sensors when deleting and adding back models
+   https://bitbucket.org/osrf/gazebo/pull-requests/1413/allow-multiple-contact-sensors-per-link/diff
+3) Also made changes to ContactManager.cc, .hh to add removeFilters function which was not present 
+   - used gazebo5 code for this
+4) Above two fixes did not fix all the problems - so made this addtional change: 
+   https://bitbucket.org/ElteHupkes/gazebo/commits/9649107ad71811ea38b96db647b8150defc5e4a9 for 
+   fixing removeFilter so that things work ok now.
