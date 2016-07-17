@@ -25,6 +25,7 @@ namespace gazebo
   {
     class ODECollision;
     class ODELink;
+    class ODEModel; // From: https://bitbucket.org/osrf/gazebo/issues/1780/ode-collision-space-not-deleted-when-model
     class ODERayShape;
     class ODESurfaceParams;
     class ODEPhysics;
@@ -36,6 +37,11 @@ namespace gazebo
     /// \def ODELinkPtr
     /// \brief Boost shared point to ODELink
     typedef boost::shared_ptr<ODELink> ODELinkPtr;
+
+    // From: https://bitbucket.org/osrf/gazebo/issues/1780/ode-collision-space-not-deleted-when-model
+    /// \def ODEModelPtr
+    /// \brief Boost shared point to ODEModel
+    typedef boost::shared_ptr<ODEModel> ODEModelPtr;
 
     /// \def ODERayShapePtr
     /// \brief Boost shared point to ODERayShape

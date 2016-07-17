@@ -132,6 +132,10 @@ namespace gazebo
                       { return "ode"; }
 
       // Documentation inherited
+      // From: https://bitbucket.org/osrf/gazebo/issues/1780/ode-collision-space-not-deleted-when-model
+      public: virtual ModelPtr CreateModel(BasePtr _parent);
+
+      // Documentation inherited
       public: virtual LinkPtr CreateLink(ModelPtr _parent);
 
       // Documentation inherited
@@ -302,8 +306,9 @@ namespace gazebo
       /// \brief Current index into the contactFeedbacks buffer
       private: unsigned int jointFeedbackIndex;
 
+      // From: https://bitbucket.org/osrf/gazebo/issues/1780/ode-collision-space-not-deleted-when-model
       /// \brief All the collsiion spaces.
-      private: std::map<std::string, dSpaceID> spaces;
+      //private: std::map<std::string, dSpaceID> spaces;
 
       /// \brief All the normal colliders.
       private: std::vector< std::pair<ODECollision*, ODECollision*> > colliders;

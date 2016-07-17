@@ -46,6 +46,7 @@
 
 #include "gazebo/physics/ode/ODECollision.hh"
 #include "gazebo/physics/ode/ODELink.hh"
+#include "gazebo/physics/ode/ODEModel.hh"
 #include "gazebo/physics/ode/ODEScrewJoint.hh"
 #include "gazebo/physics/ode/ODEHingeJoint.hh"
 #include "gazebo/physics/ode/ODEHinge2Joint.hh"
@@ -455,20 +456,35 @@ void ODEPhysics::Reset()
 }
 
 //////////////////////////////////////////////////
+// From: https://bitbucket.org/osrf/gazebo/issues/1780/ode-collision-space-not-deleted-when-model
+ModelPtr ODEPhysics::CreateModel(BasePtr _parent)
+{
+  ODEModelPtr model(new ODEModel(_parent, this->spaceId, this->physicsUpdateMutex));
+  return model;
+}
+
+//////////////////////////////////////////////////
 LinkPtr ODEPhysics::CreateLink(ModelPtr _parent)
 {
   if (_parent == NULL)
     gzthrow("Link must have a parent\n");
 
+  // From: https://bitbucket.org/osrf/gazebo/issues/1780/ode-collision-space-not-deleted-when-model
+  /*
   std::map<std::string, dSpaceID>::iterator iter;
   iter = this->spaces.find(_parent->GetName());
 
   if (iter == this->spaces.end())
     this->spaces[_parent->GetName()] = dSimpleSpaceCreate(this->spaceId);
+  */
+  boost::shared_ptr<ODEModel> _odeParent = boost::dynamic_pointer_cast<ODEModel>(_parent);
+  if (!_odeParent)
+     gzthrow("Link parent is not of type ODEModel");
 
   ODELinkPtr link(new ODELink(_parent));
 
-  link->SetSpaceId(this->spaces[_parent->GetName()]);
+  //link->SetSpaceId(this->spaces[_parent->GetName()]);
+  link->SetSpaceId(_odeParent->GetSpaceId());
   link->SetWorld(_parent->GetWorld());
 
   return link;
